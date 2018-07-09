@@ -15,17 +15,22 @@ router.post('/', function(req, res, next) {
   let startPm = req.body.startPm.match(/[0-9]{2}/g);
   let endPm = req.body.endPm.match(/[0-9]{2}/g);
 
-  let cronStartAm = '0 '+startAm[1]+' '+startAm[0]+' * * *';
-  let cronEndAm = '0 '+endAm[1]+' '+endAm[0]+' * * *';
+  /*
+  cronの書き方
+  秒 分 時 日 月 曜日
+  */
+  let cronAm = '0 '+startAm[1]+' '+startAm[0]+'-'+endAm[0]+' * * *';
 
   let cronStartPm = '0 '+startPm[1]+' '+startPm[0]+' * * *';
   let cronEndPm = '0 '+endPm[1]+' '+endPm[0]+' * * *';
 
-  let jobAm = new CronJob(cronStartAm, () => {
+  let jobAm = new CronJob(cronAm, () => {
+    //ここで午前中の調光処理
     console.log('Hello am');
   }, null, true);
   
   let jobPm = new CronJob(cronStartPm, () => {
+    //ここで午後の調光処理
     console.log('Hello pm');
   }, null, true);
 
