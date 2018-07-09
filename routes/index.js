@@ -4,8 +4,8 @@ const {CronJob} = require('cron');
 const request = require('request');
 const headers = {'Content-Type':'application/json'};
 
-const hueApiAdress = 'http://172.20.11.99//api/<username>/lights/<ID>/state'
-const testUri = 'https://radiant-reaches-45097.herokuapp.com/1ibxy4j1'
+const hueApiAdress = 'http://172.20.11.99//api/<username>/lights/<ID>/state' //接続するhueのadress
+const testUri = 'https://radiant-reaches-45097.herokuapp.com/1ibxy4j1' //テスト用URI
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   console.log(req.body);
-  let startAm = req.body.startAm.match(/[0-9]{2}/g);
+  let startAm = req.body.startAm.match(/[0-9]{2}/g); //正規表現でhh:mmをhhとmmに分割．hhは[0]にmmは[1]に格納
   let endAm = req.body.endAm.match(/[0-9]{2}/g);
 
   let startPm = req.body.startPm.match(/[0-9]{2}/g);
@@ -42,6 +42,7 @@ router.post('/', function(req, res, next) {
         // uri: hueApiAdress,
         uri: testUri,
         headers: headers,
+        //以下のjson部分に調光情報を記入
         json: {
           "on":true, 
           "bri":24, 
@@ -59,6 +60,7 @@ router.post('/', function(req, res, next) {
       // uri: hueApiAdress,
       uri: testUri,
       headers: headers,
+      //以下のjson部分に調光情報を記入
       json: {
         "on":true, 
         "bri":24, 
