@@ -14,7 +14,7 @@
                 _td_event = null,
                 _td_options = $.extend({
 
-                    format: 'h:mm a',
+                    format: 'hh:mm',
                     autoswitch: false,
                     meridians: false,
                     mousewheel: false,
@@ -149,14 +149,15 @@
 
                     if (Math.round(_td_h) >= 12 && Math.round(_td_h) < 24) {
                         var
-                            h = Math.round(_td_h) - 12,
-                            a = 'pm',
-                            A = 'PM';
-                    } else {
+                            h = Math.round(_td_h),
+                            a = '',
+                            A = '';
+
+                    }else {
                         var
                             h = Math.round(_td_h),
-                            a = 'am',
-                            A = 'AM';
+                            a = '',
+                            A = '';
                     }
 
                     if (h == 0) h = 12;
