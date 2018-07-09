@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/javascripts/timedropper.js"></script>
+    <script type="text/javascript" src="/javascripts/httpRequest.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/timedropper.css"/>
+  </head>
+  <body>
+    <h1>KC104壁面照明コントローラ</h1>
+
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="name">お名前</label>
+        <div class="controls">
+          <input id="name" type="text" value="山田 太郎"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="age">年齢</label>
+        <div class="controls">
+          <input id="age" type="text" value="36"/>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button id="update" type="button">更新</button>
+        </div>
+      </div>
+    </form>
+
+    
+    <table border="1">
+      <tr>
+        <th>開始時刻</th>
+        <th>終了時刻</th>
+        <th>色温度</th>
+      </tr>
+      <tr>
+        <td><input type="text" id="startAm" /></td>
+        <td><input type="text" id="endAm" /></td>
+        <td><input type="text" id="amColorTemp" />K</td>
+      </tr>
+      <tr>
+        <td><input type="text" id="startPm" /></td>
+        <td><input type="text" id="endPm" /></td>
+        <td><input type="text" id="pmColorTemp" />K</td>
+      </tr>
+    </table>
+    <button type="button" id="send" name="send" value="send">
+      <font size="2">送信</font>
+    </button>
+
+    <script>$( "#startAm" ).timeDropper();</script>
+    <script>$( "#endAm" ).timeDropper();</script>
+
+    <script>$( "#startPm" ).timeDropper();</script>
+    <script>$( "#endPm" ).timeDropper();</script>
+  </body>
+
+  
+
+</html>
