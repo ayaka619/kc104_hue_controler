@@ -36,6 +36,8 @@ router.post('/', function(req, res, next) {
     if(date.getHours() == parseInt(startAm[0])){
       //cron実行時刻がstart時刻と同じ場合（各日最初に実行される時）
       //この時は指定された色温度で点灯（amStartColorTemp）
+      //なおreq.body.amStartColorTempで開始時の色温度
+      //　　req.body.amEndColorTemp  で終了時の色温度が取得できる
       let options = {
         // uri: hueApiAdress,
         uri: testUri,
