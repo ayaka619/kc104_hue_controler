@@ -9,6 +9,7 @@ KC104の壁面照明に使用されるhueの調光システム
 
 # 使用ライブラリ
 - node-hue-api（https://www.npmjs.com/package/node-hue-api）
+- node-cron（https://www.npmjs.com/package/node-cron）
 
 # 使用方法
 1. git clone https://github.com/ayaka619/kc104_hue_controler.git
