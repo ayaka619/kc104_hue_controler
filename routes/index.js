@@ -4,8 +4,34 @@ const {CronJob} = require('cron');
 const request = require('request');
 const headers = {'Content-Type':'application/json'};
 
-const hueApiAdress = 'http://172.20.11.99//api/<username>/lights/<ID>/state' //接続するhueのadress
-const testUri = 'https://radiant-reaches-45097.herokuapp.com/1ibxy4j1' //テスト用URI
+//node-hue-api
+const hue = require("node-hue-api");
+const HueApi = hue.HueApi;
+const lightState = hue.lightState;
+
+let lightNum;
+
+//表示用の関数
+var displayLightNum = function(result){
+  lightNum = result.lights.length;
+  console.log(lightNum);
+}
+
+var displayResult = function(result){
+  console.log(result);
+}
+
+var displayError = function(err){
+  console.error(err);
+}
+
+//host情報
+const host = "172.20.11.99"
+const username = "d02sfHv8nPolNMQ9lrQjvY6FD4N8Ik9cygtg3gR4"
+let api = new HueApi(host,username)
+const state = lightState.create();
+
+api = new HueApi(host,username);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -38,47 +64,21 @@ router.post('/', function(req, res, next) {
       //この時は指定された色温度で点灯（amStartColorTemp）
       //なおreq.body.amStartColorTempで開始時の色温度
       //　　req.body.amEndColorTemp  で終了時の色温度が取得できる
-      let options = {
-        // uri: hueApiAdress,
-        uri: testUri,
-        headers: headers,
-        //以下のjson部分に調光情報を記入
-        json: {
-          "on":true, 
-          "bri":24, 
-          "xy":[0.15,0.7], 
-          "sat":254
-        }
-      };
-      request.post(options, function(error, response, body){});
+      for(var i = 0; i < 7; i++){
+        console.log(i);
+        api.setLightState(i+1,state.on().bri(10).ct(153)).then(displayResult).fail(displayError).done();         
+      }
     }else{
       /*
       それ以外の場合は色温度を下げて行く
       色温度をxy色度，明度，彩度でどのように下げて行くのかは調査が必要
       */
-     let options = {
-      // uri: hueApiAdress,
-      uri: testUri,
-      headers: headers,
-      //以下のjson部分に調光情報を記入
-      json: {
-        "on":true, 
-        "bri":24, 
-        "xy":[0.15,0.7], 
-        "sat":254
+      for(var i = 0; i < 7; i++){
+        api.setLightState(i+1,state.on().bri(255).ct(153)).then(displayResult).fail(displayError).done();
       }
-    };
-    request.post(options, function(error, response, body){});
     }
-    
     console.log('Hello am');
   }, null, true);
-  
-  // let jobPm = new CronJob(cronStartPm, () => {
-  //   //ここで午後の調光処理
-  //   console.log('Hello pm');
-  // }, null, true);
-
   res.render('index', { title: 'Express' });
 });
 
