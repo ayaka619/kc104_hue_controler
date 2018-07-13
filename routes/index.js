@@ -67,7 +67,18 @@ router.post('/', function(req, res, next) {
   let cronPm = '0 0,10,20,30,40,50 '+startPm[0]+'-'+endPm[0]+' * * *'; //startPm[0]時〜endPm[0]時まで10分おきに実行
 
   let jobAm = cron.schedule(cronAm, function(){
-    //ここで午前中の調光処理
+    if(nowColorTemp < 153){
+      nowColorTemp = 153;
+    }
+    for(var i = 0; i < 7; i++){
+      console.log(i);
+      api.setLightState(i+1,state.on().bri(255).ct(nowColorTemp)).then(displayResult).fail(displayError).done();         
+    }
+    nowColorTemp = nowColorTemp - parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
+    console.log(nowColorTemp);
+  });
+
+  let jobPm = cron.schedule(cronPm, function(){
     if(nowColorTemp > 500){
       nowColorTemp = 500;
     }
