@@ -37,8 +37,29 @@ let displayError = function(err){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  api.setLightState(1,state.on().bri(255).ct(153));
+  //host情報
+  const host = "172.20.11.99"
+  const username = "d02sfHv8nPolNMQ9lrQjvY6FD4N8Ik9cygtg3gR4"
+  let api = new HueApi(host,username)
+  const state = lightState.create();
+  for(var i=0;i<7;i++){
+    api.setLightState(i+1,state.on().bri(255).ct(153));
+  }
   res.render('index', { title: 'Express' });
+});
+
+router.post('/realtime', function(req, res, next) {
+  console.log(req.body);
+
+  //host情報
+  const host = req.body.bridgeIp;
+  const username = req.body.username;
+  let api = new HueApi(host,username)
+  const state = lightState.create();
+
+  for(var i=0;i<7;i++){
+    api.setLightState(i+1,state.on().bri(req.body.brightness).sat(req.body.saturation).ct(req.body.colorTemp));
+  }
 });
 
 router.post('/', function(req, res, next) {
@@ -67,6 +88,8 @@ router.post('/', function(req, res, next) {
   // let cronPm = '0 '+startPm[1]+' '+startPm[0]+'-'+endPm[0]+' * * *';
   let cronPm = '0 0,10,20,30,40,50 '+startPm[0]+'-'+endPm[0]+' * * *'; //startPm[0]時〜endPm[0]時まで10分おきに実行
 
+
+  //ct = 500が一番色温度が低い，ct = 153が一番色温度が高い
   let jobAm = cron.schedule(cronAm, function(){
     if(nowColorTemp < 153){
       nowColorTemp = 153;
@@ -75,7 +98,7 @@ router.post('/', function(req, res, next) {
       console.log(i);
       api.setLightState(i+1,state.on().bri(255).ct(nowColorTemp)).then(displayResult).fail(displayError).done();         
     }
-    nowColorTemp = nowColorTemp + parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
+    nowColorTemp = nowColorTemp - parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
     console.log(nowColorTemp);
   });
 
@@ -87,7 +110,7 @@ router.post('/', function(req, res, next) {
       console.log(i);
       api.setLightState(i+1,state.on().bri(255).ct(nowColorTemp)).then(displayResult).fail(displayError).done();         
     }
-    nowColorTemp = nowColorTemp - parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
+    nowColorTemp = nowColorTemp + parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
     console.log(nowColorTemp);
   });
 

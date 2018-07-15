@@ -30,6 +30,21 @@
     <button type="submit" id="send">
       <font size="2">送信</font>
     </button>
+
+    <form id="lightData">
+      <div>
+          <input type="text" name="bridgeIp" id="bridgeIp" value="172.20.11.99" />
+          <input type="text" name="username" id="username" value="d02sfHv8nPolNMQ9lrQjvY6FD4N8Ik9cygtg3gR4">
+      </div>
+      <div>
+        <input type="text" name="brightness" id="brightness" placeholder="Brightness: 0-255" />
+        <input type="text" name="colorTemp" id="colorTemp" placeholder="Color Temperature: 153-500"/>
+        <input type="text" name="saturation" id="saturation" placeholder="Saturation: 0-255"/>
+      </div>
+    </form>
+    <button type="submit" id="lightOn">
+      <font size="2">点灯</font>
+    </button>
   </body>
   <script type="text/javascript" src="/javascripts/common.js"></script>
   <script type="text/javascript" src="/javascripts/httpRequest.js"></script>
