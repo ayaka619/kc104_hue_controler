@@ -37,6 +37,7 @@ let displayError = function(err){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  api.setLightState(1,state.on().bri(255).ct(153));
   res.render('index', { title: 'Express' });
 });
 
@@ -74,7 +75,7 @@ router.post('/', function(req, res, next) {
       console.log(i);
       api.setLightState(i+1,state.on().bri(255).ct(nowColorTemp)).then(displayResult).fail(displayError).done();         
     }
-    nowColorTemp = nowColorTemp - parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
+    nowColorTemp = nowColorTemp + parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
     console.log(nowColorTemp);
   });
 
@@ -86,33 +87,10 @@ router.post('/', function(req, res, next) {
       console.log(i);
       api.setLightState(i+1,state.on().bri(255).ct(nowColorTemp)).then(displayResult).fail(displayError).done();         
     }
-    nowColorTemp = nowColorTemp + parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
+    nowColorTemp = nowColorTemp - parseInt((500-153) / ((endAm[0] - startAm[0]) * 6)); 
     console.log(nowColorTemp);
   });
 
-  // let jobAm = new CronJob(cronAm, () => {
-  //   //ここで午前中の調光処理
-  //   let date = new Date();
-  //   if(date.getHours() == parseInt(startAm[0])){
-  //     //cron実行時刻がstart時刻と同じ場合（各日最初に実行される時）
-  //     //この時は指定された色温度で点灯（amStartColorTemp）
-  //     //なおreq.body.amStartColorTempで開始時の色温度
-  //     //　　req.body.amEndColorTemp  で終了時の色温度が取得できる
-  //     for(var i = 0; i < 7; i++){
-  //       console.log(i);
-  //       api.setLightState(i+1,state.on().bri(10).ct(153)).then(displayResult).fail(displayError).done();         
-  //     }
-  //   }else{
-  //     /*
-  //     それ以外の場合は色温度を下げて行く
-  //     色温度をxy色度，明度，彩度でどのように下げて行くのかは調査が必要
-  //     */
-  //     for(var i = 0; i < 7; i++){
-  //       api.setLightState(i+1,state.on().bri(255).ct(153)).then(displayResult).fail(displayError).done();
-  //     }
-  //   }
-  //   console.log('Hello am');
-  // }, null, true);
   res.render('index', { title: 'Express' });
 });
 
